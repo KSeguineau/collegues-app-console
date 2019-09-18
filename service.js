@@ -31,7 +31,7 @@ function connexion(identifiant, motDePasse, retour) {
 
 //recupere une liste de collegue selon leur prenom et appel recupererInformationParMatricule pour chaque collegue
 //renvoi un tableau de collegue
-function recupererParNom(nom, affichage) {
+function recupererParNom(nom, retour) {
 
     request('https://kseguineau-collegues-api.herokuapp.com/collegues?nom=' + nom, {json: true}, function (err, res, body) {
         if (err) {
@@ -52,14 +52,14 @@ function recupererParNom(nom, affichage) {
                     cpt--;
                     collegues.push(body);
                     if (cpt === 0) {
-                        affichage(collegues);
+                        retour(collegues);
                     }
                 });
 
 
             });
         } else {
-            affichage([]);
+            retour([]);
         }
     });
 
