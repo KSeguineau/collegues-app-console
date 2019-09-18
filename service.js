@@ -1,5 +1,14 @@
+//require
 var request = require('request').defaults({jar: true});
 
+//exports
+exports.connexion = connexion;
+exports.recupererParNom = recupererParNom;
+exports.creerCollegue = creerCollegue;
+exports.modifierEmail = modifierEmail;
+exports.modifierPhoto = modifierPhoto;
+
+//==========================================================================
 
 // fait la demande de connexion
 function connexion(identifiant, motDePasse, retour) {
@@ -21,6 +30,7 @@ function connexion(identifiant, motDePasse, retour) {
 }
 
 //recupere une liste de collegue selon leur prenom et appel recupererInformationParMatricule pour chaque collegue
+//renvoi un tableau de collegue
 function recupererParNom(nom, affichage) {
 
     request('https://kseguineau-collegues-api.herokuapp.com/collegues?nom=' + nom, {json: true}, function (err, res, body) {
@@ -55,6 +65,7 @@ function recupererParNom(nom, affichage) {
 
 }
 
+// creation d’un collegue
 function creerCollegue(nom, prenom, email, ddn, photo, retour) {
     request('https://kseguineau-collegues-api.herokuapp.com/collegues',
         {
@@ -74,6 +85,7 @@ function creerCollegue(nom, prenom, email, ddn, photo, retour) {
     );
 }
 
+// modification de l’email
 function modifierEmail(matricule,email,retour) {
     request('https://kseguineau-collegues-api.herokuapp.com/collegues/'+matricule,
         {
@@ -91,6 +103,7 @@ function modifierEmail(matricule,email,retour) {
     );
 }
 
+//modification de la photo
 function modifierPhoto(matricule,photo,retour) {
     request('https://kseguineau-collegues-api.herokuapp.com/collegues/'+matricule,
         {
@@ -110,8 +123,3 @@ function modifierPhoto(matricule,photo,retour) {
 
 
 
-exports.connexion = connexion;
-exports.recupererParNom = recupererParNom;
-exports.creerCollegue = creerCollegue;
-exports.modifierEmail = modifierEmail;
-exports.modifierPhoto = modifierPhoto;
