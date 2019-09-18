@@ -10,9 +10,39 @@ var rl = readline.createInterface({
 });
 
 // affiche un collegue avec la forme nom prenom dateDeNaissance
-function affichageCollegue(collegue){
-    console.log(collegue.nom+" "+collegue.prenom+" "+collegue.ddn);
+function affichageCollegue(collegues){
+    if(collegues.length===0){
+        console.log("Aucun collegues trouvés avec ce nom.");
+        menu();
+    }else {
+        collegues.forEach(collegue => console.log(collegue.nom + " " + collegue.prenom + " " + collegue.ddn));
+        menu();
+    }
 }
+
+function creerCollegue() {
+
+    rl.question("nom :",nom=> {
+        rl.question("prenom :", prenom => {
+            rl.question("email :", email => {
+                rl.question("ddn (yyyy-mm--dd) :", ddn => {
+                    rl.question("photo :", photo => {
+                        service.creerCollegue(nom, prenom, email, ddn, photo, (err, res,body) => {
+                            if (res.statusCode === 200) {
+                                console.log("creation reussi");
+                                menu();
+                            } else {
+                                console.log(err);
+                                menu();
+                            }
+                        })
+                    })
+                })
+            })
+        })
+    })
+}
+
 
 //connecte l’utilisateur
 function start(){
@@ -40,6 +70,7 @@ function start(){
 // affiche le menu
 function menu() {
         console.log("1. Rechercher un collègue par nom");
+        console.log("2. Creer un collegue.");
         console.log("99. Sortir");
 
         rl.question("choix:", (saisie) => {
@@ -47,7 +78,9 @@ function menu() {
                 case "1":
                     console.log("Recherche en cours du nom xxx.");
                     rl.question("nom:",(nom)=>service.recupererParNom(nom,affichageCollegue));
-                    menu();
+                    break;
+                case "2":
+                    creerCollegue();
                     break;
                 case "99":
                     rl.close();
@@ -63,3 +96,4 @@ function menu() {
 
 
 exports.start = start;
+exports.menu = menu;
