@@ -4,7 +4,7 @@ var request = require('request').defaults({jar: true});
 // fait la demande de connexion
 function connexion(identifiant, motDePasse, retour) {
 
-    return request('https://kseguineau-collegues-api.herokuapp.com/auth',
+     request('https://kseguineau-collegues-api.herokuapp.com/auth',
         {
             method: 'POST',
             json: true,
@@ -74,7 +74,44 @@ function creerCollegue(nom, prenom, email, ddn, photo, retour) {
     );
 }
 
+function modifierEmail(matricule,email,retour) {
+    request('https://kseguineau-collegues-api.herokuapp.com/collegues/'+matricule,
+        {
+            method: 'PATCH',
+            json: true,
+            body: {
+
+                email: email
+
+            }
+        },
+        function (err, res, body) {
+            retour(err, res, body);
+        }
+    );
+}
+
+function modifierPhoto(matricule,photo,retour) {
+    request('https://kseguineau-collegues-api.herokuapp.com/collegues/'+matricule,
+        {
+            method: 'PATCH',
+            json: true,
+            body: {
+
+                photoUrl: photo
+
+            }
+        },
+        function (err, res, body) {
+            retour(err, res, body);
+        }
+    );
+}
+
+
 
 exports.connexion = connexion;
 exports.recupererParNom = recupererParNom;
 exports.creerCollegue = creerCollegue;
+exports.modifierEmail = modifierEmail;
+exports.modifierPhoto = modifierPhoto;

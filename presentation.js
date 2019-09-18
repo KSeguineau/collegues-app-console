@@ -32,7 +32,7 @@ function creerCollegue() {
                                 console.log("creation reussi");
                                 menu();
                             } else {
-                                console.log(err);
+                                console.log("creation impossible");
                                 menu();
                             }
                         })
@@ -43,6 +43,39 @@ function creerCollegue() {
     })
 }
 
+function modifierEmail() {
+    rl.question("matricule :",matricule=>{
+        rl.question("Email :", email=>{
+        service.modifierEmail(matricule,email,(err, res,body) => {
+            if (res.statusCode === 200) {
+                console.log("modification reussi");
+                menu();
+            } else {
+                console.log("modification impossible");
+                menu();
+            }
+            })
+        })
+    })
+
+}
+
+function modifierPhoto() {
+    rl.question("matricule :",matricule=>{
+        rl.question("photo :", photo=>{
+            service.modifierPhoto(matricule,photo,(err, res,body) => {
+                if (res.statusCode === 200) {
+                    console.log("modification reussi");
+                    menu();
+                } else {
+                    console.log("modification impossible");
+                    menu();
+                }
+            })
+        })
+    })
+
+}
 
 //connecte l’utilisateur
 function start(){
@@ -71,6 +104,8 @@ function start(){
 function menu() {
         console.log("1. Rechercher un collègue par nom");
         console.log("2. Creer un collegue.");
+        console.log("3. modification email");
+        console.log("4. modification photo");
         console.log("99. Sortir");
 
         rl.question("choix:", (saisie) => {
@@ -81,6 +116,12 @@ function menu() {
                     break;
                 case "2":
                     creerCollegue();
+                    break;
+                case "3":
+                    modifierEmail();
+                    break;
+                case "4":
+                    modifierPhoto();
                     break;
                 case "99":
                     rl.close();
