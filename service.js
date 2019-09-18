@@ -1,5 +1,6 @@
 //require
 var request = require('request').defaults({jar: true});
+var config = require('./config');
 
 //exports
 exports.connexion = connexion;
@@ -13,7 +14,7 @@ exports.modifierPhoto = modifierPhoto;
 // fait la demande de connexion
 function connexion(identifiant, motDePasse, retour) {
 
-     request('https://kseguineau-collegues-api.herokuapp.com/auth',
+     request(config.url.urlApiCollegue+'/auth',
         {
             method: 'POST',
             json: true,
@@ -33,7 +34,7 @@ function connexion(identifiant, motDePasse, retour) {
 //renvoi un tableau de collegue
 function recupererParNom(nom, retour) {
 
-    request('https://kseguineau-collegues-api.herokuapp.com/collegues?nom=' + nom, {json: true}, function (err, res, body) {
+    request(config.url.urlApiCollegue+'/collegues?nom=' + nom, {json: true}, function (err, res, body) {
         if (err) {
             return console.log('Erreur', err);
         }
@@ -45,7 +46,7 @@ function recupererParNom(nom, retour) {
         if (cpt > 0) {
             body.forEach((m) => {
 
-                request('https://kseguineau-collegues-api.herokuapp.com/collegues/' + m, {json: true}, function (err, res, body) {
+                request(config.url.urlApiCollegue+'/collegues/' + m, {json: true}, function (err, res, body) {
                     if (err) {
                         return console.log('Erreur', err);
                     }
@@ -67,7 +68,7 @@ function recupererParNom(nom, retour) {
 
 // creation d’un collegue
 function creerCollegue(nom, prenom, email, ddn, photo, retour) {
-    request('https://kseguineau-collegues-api.herokuapp.com/collegues',
+    request(config.url.urlApiCollegue+'/collegues',
         {
             method: 'POST',
             json: true,
@@ -87,7 +88,7 @@ function creerCollegue(nom, prenom, email, ddn, photo, retour) {
 
 // modification de l’email
 function modifierEmail(matricule,email,retour) {
-    request('https://kseguineau-collegues-api.herokuapp.com/collegues/'+matricule,
+    request(config.url.urlApiCollegue+'/collegues/'+matricule,
         {
             method: 'PATCH',
             json: true,
@@ -105,7 +106,7 @@ function modifierEmail(matricule,email,retour) {
 
 //modification de la photo
 function modifierPhoto(matricule,photo,retour) {
-    request('https://kseguineau-collegues-api.herokuapp.com/collegues/'+matricule,
+    request(config.url.urlApiCollegue+'/collegues/'+matricule,
         {
             method: 'PATCH',
             json: true,
