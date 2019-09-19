@@ -13,8 +13,8 @@ class InterfaceUtilisateur {
         menu.push(new MenuItem("Sortir.",this.qU.close.bind(this.qU)));
         menu.push(new MenuItem("Rechercher par nom.",this.rechercherParNom.bind(this)));
         menu.push(new MenuItem("Creer un collegue.",this.creerCollegue.bind(this)));
-        menu.push(new MenuItem("Modifier email.",this.modifierEmail.bind(this)));
-        menu.push(new MenuItem("Modifier photo.",this.modifierPhoto.bind(this)));
+        menu.push(new MenuItem("Modifier email.",this.modifier("email").bind(this)));
+        menu.push(new MenuItem("Modifier photo.",this.modifier("photoUrl").bind(this)));
         return menu;
     }
 
@@ -29,8 +29,8 @@ class InterfaceUtilisateur {
         console.log("connexion");
 
         this.qU.question("identifiant:", "id", {})
-            .then(objet =>this.qU.question("mot de passe:", "mdp", objet))
-            .then(objet =>  this.service.connexion(objet.id, objet.mdp))
+            .then(infosConnexion =>this.qU.question("mot de passe:", "mdp", infosConnexion))
+            .then(infosConnexion =>  this.service.connexion(infosConnexion.id, infosConnexion.mdp))
             .then(() => {
                 console.log("connexion reussie.\n");
                 this.afficherMenu();
@@ -45,7 +45,7 @@ class InterfaceUtilisateur {
 //affiche la liste des collegues qui on le nom demandé
     rechercherParNom() {
         this.qU.question("nom:", "nom", {})
-            .then(objet => this.service.recupererParNom(objet.nom))
+            .then(collegue => this.service.recupererParNom(collegue.nom))
             .then((listeCollegue) => this.affichageCollegue(listeCollegue));
     }
 
@@ -65,11 +65,11 @@ class InterfaceUtilisateur {
     creerCollegue() {
 
         this.qU.question("nom:", "nom", {})
-            .then(objet => this.qU.question("prenom:", "prenom", objet))
-            .then(objet=>  this.qU.question("email:", "email", objet))
-            .then(objet => this.qU.question("ddn(yyyy-mm-dd):", "ddn", objet))
-            .then(objet=> this.qU.question("photo:", "photo", objet))
-            .then(objet =>  this.service.creerCollegue(objet.nom, objet.prenom, objet.email, objet.ddn, objet.photo))
+            .then(collegue => this.qU.question("prenom:", "prenom", collegue))
+            .then(collegue=>  this.qU.question("email:", "email", collegue))
+            .then(collegue => this.qU.question("ddn(yyyy-mm-dd):", "ddn", collegue))
+            .then(collegue=> this.qU.question("photo:", "photo", collegue))
+            .then(collegue =>  this.service.creerCollegue(collegue.nom, collegue.prenom, collegue.email, collegue.ddn, collegue.photo))
             .then(() => {
                 console.log("creation réussi\n");
                 this.afficherMenu();
@@ -80,38 +80,20 @@ class InterfaceUtilisateur {
             });
     }
 
-// modification d’un email
-    modifierEmail() {
+    modifier(typeModification) {
 
-        this.qU.question("matricule :", "matricule", {})
-            .then(objet => this.qU.question("Email :", "email", objet))
-            .then(objet =>  this.service.modifierEmail(objet.matricule, objet.email))
+      return ()=> this.qU.question("matricule :", "matricule", {})
+            .then(modification => this.qU.question(`${typeModification} :`, typeModification, modification))
+            .then(modification =>  this.service.modifierCollegue(modification.matricule, modification[typeModification],typeModification))
             .then(() => {
                 console.log("modification reussi\n");
                 this.afficherMenu();
             })
-            .catch(() => {
+            .catch((err) => {
                 console.log("modification impossible\n");
+                console.log(err);
                 this.afficherMenu();
             })
-    }
-
-//modification d’une photo
-    modifierPhoto() {
-
-        this.qU.question("matricule :", "matricule", {})
-            .then(objet => this.qU.question("photo :", "photo", objet))
-            .then(objet =>  this.service.modifierPhoto(objet.matricule, objet.photo))
-            .then(() => {
-                console.log("modification reussi\n");
-                this.afficherMenu();
-            })
-            .catch(() => {
-                console.log("modification impossible\n");
-                this.afficherMenu();
-            })
-
-
     }
 }
 

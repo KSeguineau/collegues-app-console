@@ -59,27 +59,16 @@ class Service {
 
 // modification de l’email
 
-    modifierEmail(matricule, email) {
-       return request(`${config.url.urlApiCollegue}/collegues/${matricule}`,
-            {
-                method: 'PATCH',
-                json: true,
-                body: {
-                    email: email
-                }
-            }
-        );
-    }
+    modifierCollegue(matricule,value,typeModification){
 
-//modification de la photo
-   modifierPhoto(matricule, photo) {
-       return request(`${config.url.urlApiCollegue}/collegues/${matricule}`,
+      const body = {};
+      body[typeModification] = value;
+
+        return request(`${config.url.urlApiCollegue}/collegues/${matricule}`,
             {
                 method: 'PATCH',
                 json: true,
-                body: {
-                    photoUrl: photo
-                }
+                body: body
             }
         );
     }
