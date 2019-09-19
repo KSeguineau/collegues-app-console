@@ -1,10 +1,10 @@
 //require
-var presentation = require("./presentation");
-
+const {InterfaceUtilisateur} = require("./InterfaceUtilisateur");
 
 //========================================================
 
+const interfaceUtilisateur = new InterfaceUtilisateur();
 
 console.log("** Administartion Collegues **\n");
 
-presentation.start();
+interfaceUtilisateur.start();
