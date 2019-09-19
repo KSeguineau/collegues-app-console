@@ -2,9 +2,6 @@
 const readline = require('readline');
 const {Service} = require('./service');
 
-
-
-
 //===========================================================================
 
 class InterfaceUtilisateur {
@@ -177,6 +174,8 @@ class InterfaceUtilisateur {
 
     }
 }
+
+//================================================================================
 
 //export
 exports.InterfaceUtilisateur = InterfaceUtilisateur;
