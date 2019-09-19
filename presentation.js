@@ -14,7 +14,6 @@ var rl = readline.createInterface({
     output: process.stdout
 });
 
-
 //connecte l’utilisateur
 function start(){
 
