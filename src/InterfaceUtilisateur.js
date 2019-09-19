@@ -5,17 +5,17 @@ class InterfaceUtilisateur {
     constructor(service,questionUtils){
          this.service = service;
          this.qU = questionUtils;
-         this.menu = new Menu(this.creerMenu(),this.qU);
+         this.menu = this.creerMenu(this.qU);
     }
 
-    creerMenu(){
+    creerMenu(questionUtils){
         const menu = [];
         menu.push(new MenuItem("Sortir.",this.qU.close.bind(this.qU)));
         menu.push(new MenuItem("Rechercher par nom.",this.rechercherParNom.bind(this)));
         menu.push(new MenuItem("Creer un collegue.",this.creerCollegue.bind(this)));
         menu.push(new MenuItem("Modifier email.",this.modifier("email").bind(this)));
         menu.push(new MenuItem("Modifier photo.",this.modifier("photoUrl").bind(this)));
-        return menu;
+        return new Menu(menu,questionUtils);
     }
 
     afficherMenu(){
