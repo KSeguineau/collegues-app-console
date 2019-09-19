@@ -27,18 +27,14 @@ class Service {
     recupererParNom(nom) {
 
         return request(`${config.url.urlApiCollegue}/collegues?nom=${nom}`, {json: true})
-            .then((listeMatricule) => {
-                return this.recupererInfoCollegue(listeMatricule);
-            });
+            .then(listeMatricule => this.recupererInfoCollegue(listeMatricule));
     }
 
 
 //recupere une liste de collegue grace à une liste de matricule
     recupererInfoCollegue(listeMatricule) {
 
-        return Promise.all(listeMatricule.map((m) => {
-            return request(`${config.url.urlApiCollegue}/collegues/${m}`, {json: true});
-        }));
+        return Promise.all(listeMatricule.map(matricule =>  request(`${config.url.urlApiCollegue}/collegues/${matricule}`, {json: true})));
 
     }
 
@@ -63,27 +59,16 @@ class Service {
 
 // modification de l’email
 
-    modifierEmail(matricule, email) {
-       return request(`${config.url.urlApiCollegue}/collegues/${matricule}`,
-            {
-                method: 'PATCH',
-                json: true,
-                body: {
-                    email: email
-                }
-            }
-        );
-    }
+    modifierCollegue(matricule,value,typeModification){
 
-//modification de la photo
-   modifierPhoto(matricule, photo) {
-       return request(`${config.url.urlApiCollegue}/collegues/${matricule}`,
+      const body = {};
+      body[typeModification] = value;
+
+        return request(`${config.url.urlApiCollegue}/collegues/${matricule}`,
             {
                 method: 'PATCH',
                 json: true,
-                body: {
-                    photoUrl: photo
-                }
+                body: body
             }
         );
     }
