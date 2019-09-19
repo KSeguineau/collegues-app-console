@@ -6,32 +6,18 @@ const {Service} = require('./service');
 
 class InterfaceUtilisateur {
     constructor(){
-        // création d'un objet `rl` permettant de récupérer la saisie utilisateur
-        this.rl = readline.createInterface({
-            input: process.stdin,
-            output: process.stdout
-        });
          this.service = new Service();
-    }
-
-    //questionne l’utilisateur et renvoie une promesse contenant objet avec pour attribut nomParam qui contient la répon
-    question(chaine, nomParam, objet) {
-        return new Promise((resolve) => {
-            this.rl.question(chaine, reponse => {
-                objet[nomParam] = reponse;
-                resolve(objet);
-            });
-        });
+         this.qU = new QuestionUtils();
     }
 
 //connecte l’utilisateur
-    start() {
+    connexion() {
 
         console.log("connexion");
 
-        this.question("identifiant:", "id", {})
+        this.qU.question("identifiant:", "id", {})
             .then((objet) => {
-                return this.question("mot de passe:", "mdp", objet)
+                return this.qU.question("mot de passe:", "mdp", objet)
             })
             .then((objet) => {
                 return this.service.connexion(objet.id, objet.mdp);
@@ -42,7 +28,7 @@ class InterfaceUtilisateur {
             })
             .catch(() => {
                 console.log("connexion impossible.\n");
-                this.start();
+                this.connexion();
             });
     }
 
@@ -56,35 +42,36 @@ class InterfaceUtilisateur {
         console.log("99. Sortir.\n");
 
 
-        this.rl.question("choix:", (saisie) => {
-            switch (saisie) {
-                case "1":
-                    this.rechercherParNom();
-                    break;
-                case "2":
-                    this.creerCollegue();
-                    break;
-                case "3":
-                    this.modifierEmail();
-                    break;
-                case "4":
-                    this.modifierPhoto();
-                    break;
-                case "99":
-                    this.rl.close();
-                    break;
-                default:
-                    console.log("choix non reconnu.\n");
-                    this.menu();
-                    break;
-            }
+        this.qU.question("choix:","choix",{})
+            .then((objet)=>{
+                switch (objet.choix) {
+                    case "1":
+                        this.rechercherParNom();
+                        break;
+                    case "2":
+                        this.creerCollegue();
+                        break;
+                    case "3":
+                        this.modifierEmail();
+                        break;
+                    case "4":
+                        this.modifierPhoto();
+                        break;
+                    case "99":
+                        this.qU.close();
+                        break;
+                    default:
+                        console.log("choix non reconnu.\n");
+                        this.menu();
+                        break;
+                }
+            })
 
-        });
     }
 
 //affiche la liste des collegues qui on le nom demandé
     rechercherParNom() {
-        this.question("nom:", "nom", {})
+        this.qU.question("nom:", "nom", {})
             .then((objet) => {
                 return this.service.recupererParNom(objet.nom)
             })
@@ -97,7 +84,7 @@ class InterfaceUtilisateur {
             console.log("Aucun collegues trouvés avec ce nom.\n");
             this.menu();
         } else {
-            collegues.forEach(collegue => console.log(`${collegue.nom} ${collegue.prenom} ${collegue.ddn}`));
+            collegues.forEach(collegue => console.log(`nom: ${collegue.nom} | prenom: ${collegue.prenom} | ddn: ${collegue.ddn} | matricule: ${collegue.matricule}`));
             console.log();
             this.menu();
         }
@@ -106,18 +93,18 @@ class InterfaceUtilisateur {
 // creation d’un collegue
     creerCollegue() {
 
-        this.question("nom:", "nom", {})
+        this.qU.question("nom:", "nom", {})
             .then((objet) => {
-                return this.question("prenom:", "prenom", objet);
+                return this.qU.question("prenom:", "prenom", objet);
             })
             .then((objet) => {
-                return this.question("email:", "email", objet);
+                return this.qU.question("email:", "email", objet);
             })
             .then((objet) => {
-                return this.question("ddn(yyyy-mm-dd):", "ddn", objet);
+                return this.qU.question("ddn(yyyy-mm-dd):", "ddn", objet);
             })
             .then((objet) => {
-                return this.question("photo:", "photo", objet);
+                return this.qU.question("photo:", "photo", objet);
             })
             .then((objet) => {
                 return this.service.creerCollegue(objet.nom, objet.prenom, objet.email, objet.ddn, objet.photo);
@@ -135,9 +122,9 @@ class InterfaceUtilisateur {
 // modification d’un email
     modifierEmail() {
 
-        this.question("matricule :", "matricule", {})
+        this.qU.question("matricule :", "matricule", {})
             .then((objet) => {
-                return this.question("Email :", "email", objet);
+                return this.qU.question("Email :", "email", objet);
             })
             .then((objet) => {
                 return this.service.modifierEmail(objet.matricule, objet.email);
@@ -155,9 +142,9 @@ class InterfaceUtilisateur {
 //modification d’une photo
     modifierPhoto() {
 
-        this.question("matricule :", "matricule", {})
+        this.qU.question("matricule :", "matricule", {})
             .then((objet) => {
-                return this.question("photo :", "photo", objet);
+                return this.qU.question("photo :", "photo", objet);
             })
             .then((objet) => {
                 return this.service.modifierPhoto(objet.matricule, objet.photo);
@@ -175,6 +162,29 @@ class InterfaceUtilisateur {
     }
 }
 
+class QuestionUtils{
+    constructor(){
+        // création d'un objet `rl` permettant de récupérer la saisie utilisateur
+        this.rl = readline.createInterface({
+            input: process.stdin,
+            output: process.stdout
+        });
+    }
+    //questionne l’utilisateur et renvoie une promesse contenant objet avec pour attribut nomParam qui contient la répon
+    question(chaine, nomParam, objet) {
+        return new Promise((resolve) => {
+            this.rl.question(chaine, reponse => {
+                objet[nomParam] = reponse;
+                resolve(objet);
+            });
+        });
+    }
+
+    //ferme le readline
+    close(){
+        this.rl.close();
+    }
+}
 //================================================================================
 
 //export

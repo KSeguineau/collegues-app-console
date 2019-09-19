@@ -7,4 +7,4 @@ const interfaceUtilisateur = new InterfaceUtilisateur();
 
 console.log("** Administartion Collegues **\n");
 
-interfaceUtilisateur.start();
+interfaceUtilisateur.connexion();
