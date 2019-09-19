@@ -84,7 +84,7 @@ class InterfaceUtilisateur {
             console.log("Aucun collegues trouvés avec ce nom.\n");
             this.menu();
         } else {
-            collegues.forEach(collegue => console.log(`${collegue.nom} ${collegue.prenom} ${collegue.ddn}`));
+            collegues.forEach(collegue => console.log(`nom: ${collegue.nom} | prenom: ${collegue.prenom} | ddn: ${collegue.ddn} | matricule: ${collegue.matricule}`));
             console.log();
             this.menu();
         }
