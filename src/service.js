@@ -27,18 +27,14 @@ class Service {
     recupererParNom(nom) {
 
         return request(`${config.url.urlApiCollegue}/collegues?nom=${nom}`, {json: true})
-            .then((listeMatricule) => {
-                return this.recupererInfoCollegue(listeMatricule);
-            });
+            .then(listeMatricule => this.recupererInfoCollegue(listeMatricule));
     }
 
 
 //recupere une liste de collegue grace à une liste de matricule
     recupererInfoCollegue(listeMatricule) {
 
-        return Promise.all(listeMatricule.map((m) => {
-            return request(`${config.url.urlApiCollegue}/collegues/${m}`, {json: true});
-        }));
+        return Promise.all(listeMatricule.map(matricule =>  request(`${config.url.urlApiCollegue}/collegues/${matricule}`, {json: true})));
 
     }
 
