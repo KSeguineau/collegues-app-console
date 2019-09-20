@@ -3,6 +3,7 @@ import QuestionUtils from "./QuestionUtils";
 import Service from "./service";
 import {TypeModification} from "./TypeModification";
 import Collegue from "./domain";
+import { format } from 'date-fns'
 
 export default class InterfaceUtilisateur {
      menu:Menu;
@@ -60,7 +61,7 @@ export default class InterfaceUtilisateur {
             console.log("Aucun collegues trouvés avec ce nom.\n");
             this.afficherMenu();
         } else {
-            collegues.forEach(collegue => console.log(`nom: ${collegue.nom} | prenom: ${collegue.prenom} | ddn: ${collegue.ddn} | matricule: ${collegue.matricule} | Url de la photo: ${collegue.photoUrl}`));
+            collegues.forEach(collegue => console.log(`nom: ${collegue.nom} | prenom: ${collegue.prenom} | ddn: ${format(collegue.ddn, 'dd/MM/yyyy')} | matricule: ${collegue.matricule} | Email: ${collegue.email} | Url de la photo: ${collegue.photoUrl}`));
             console.log();
             this.afficherMenu();
         }
@@ -74,7 +75,7 @@ export default class InterfaceUtilisateur {
             .then(collegue=>  this.qU.question("email:", "email", collegue))
             .then(collegue => this.qU.question("ddn(yyyy-mm-dd):", "ddn", collegue))
             .then(collegue=> this.qU.question("photo:", "photo", collegue))
-            .then(collegue =>  this.service.creerCollegue(collegue.nom, collegue.prenom, collegue.email, collegue.ddn, collegue.photo))
+            .then(collegue =>  this.service.creerCollegue(new Collegue(collegue.nom, collegue.prenom,new Date(Date.parse(collegue.ddn)), collegue.email, collegue.photo)))
             .then(() => {
                 console.log("creation réussi\n");
                 this.afficherMenu();

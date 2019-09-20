@@ -5,6 +5,7 @@ import {TypeModification} from "./TypeModification";
 import Collegue from "./domain";
 
 
+
 //==========================================================================
 export default class Service {
 
@@ -35,25 +36,20 @@ export default class Service {
 //recupere une liste de collegue grace à une liste de matricule
     recupererInfoCollegue(listeMatricule:string[]):Promise<Collegue[]> {
 
-        return Promise.all(listeMatricule.map(matricule =>  request(`${url.urlApiCollegue}/collegues/${matricule}`, {json: true})));
+        return Promise.all(listeMatricule.map(matricule =>  request(`${url.urlApiCollegue}/collegues/${matricule}`, {json: true})))
+            .then(listecollegue => listecollegue.map(collegue => new Collegue(collegue.nom,collegue.prenom,new Date(Date.parse(collegue.ddn)),collegue.email,collegue.photoUrl,collegue.matricule)) );
 
     }
 
 // creation d’un collegue
 
 
-    creerCollegue(nom:string, prenom:string, email:string, ddn:string, photo:string):Promise<Collegue> {
+    creerCollegue(collegue:Collegue):Promise<Collegue> {
         return request(`${url.urlApiCollegue}/collegues`,
             {
                 method: 'POST',
                 json: true,
-                body: {
-                    nom: nom,
-                    prenom: prenom,
-                    email: email,
-                    ddn: ddn,
-                    photoUrl: photo
-                }
+                body: collegue
             }
         ).promise();
     }
