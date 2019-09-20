@@ -1,7 +1,7 @@
 //require
-const {InterfaceUtilisateur} = require("./InterfaceUtilisateur");
-const {Service} = require('./service');
-const {QuestionUtils} = require('./QuestionUtils');
+import InterfaceUtilisateur from "./InterfaceUtilisateur";
+import Service from './service';
+import QuestionUtils from './QuestionUtils';
 //========================================================
 const service = new Service();
 const qU = new QuestionUtils();

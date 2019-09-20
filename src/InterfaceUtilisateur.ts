@@ -1,21 +1,24 @@
-const {Menu} = require("./Menu");
-const {MenuItem} = require("./Menu");
+import {Menu, MenuItem} from "./Menu";
+import QuestionUtils from "./QuestionUtils";
+import Service from "./service";
+import {TypeModification} from "./TypeModification";
+import Collegue from "./domain";
 
-class InterfaceUtilisateur {
-    constructor(service,questionUtils){
-         this.service = service;
-         this.qU = questionUtils;
-         this.menu = new Menu(this.creerMenu(),this.qU);
+export default class InterfaceUtilisateur {
+     menu:Menu;
+
+    constructor(public service:Service,public qU:QuestionUtils){
+         this.menu = this.creerMenu(this.qU);
     }
 
-    creerMenu(){
+    creerMenu(qu:QuestionUtils){
         const menu = [];
         menu.push(new MenuItem("Sortir.",this.qU.close.bind(this.qU)));
         menu.push(new MenuItem("Rechercher par nom.",this.rechercherParNom.bind(this)));
         menu.push(new MenuItem("Creer un collegue.",this.creerCollegue.bind(this)));
-        menu.push(new MenuItem("Modifier email.",this.modifier("email").bind(this)));
-        menu.push(new MenuItem("Modifier photo.",this.modifier("photoUrl").bind(this)));
-        return menu;
+        menu.push(new MenuItem("Modifier email.",this.modifier(TypeModification.email).bind(this)));
+        menu.push(new MenuItem("Modifier photo.",this.modifier(TypeModification.photoUrl).bind(this)));
+        return new Menu(menu,qu);
     }
 
     afficherMenu(){
@@ -50,7 +53,7 @@ class InterfaceUtilisateur {
     }
 
 // affiche un collegue avec la forme nom prenom dateDeNaissance
-    affichageCollegue(collegues) {
+    affichageCollegue(collegues:Collegue[]) {
         if (collegues.length === 0) {
             console.log("Aucun collegues trouvés avec ce nom.\n");
             this.afficherMenu();
@@ -80,7 +83,7 @@ class InterfaceUtilisateur {
             });
     }
 
-    modifier(typeModification) {
+    modifier(typeModification:TypeModification) {
 
       return ()=> this.qU.question("matricule :", "matricule", {})
             .then(modification => this.qU.question(`${typeModification} :`, typeModification, modification))
@@ -97,8 +100,4 @@ class InterfaceUtilisateur {
     }
 }
 
-//================================================================================
-
-//export
-exports.InterfaceUtilisateur = InterfaceUtilisateur;
 

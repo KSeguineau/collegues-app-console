@@ -1,9 +1,10 @@
-// require
-const readline = require('readline');
+
+import readline, {Interface} from 'readline';
 
 //==================================================================
 
-class QuestionUtils{
+export default class QuestionUtils{
+    rl:Interface;
     constructor(){
         // création d'un objet `rl` permettant de récupérer la saisie utilisateur
         this.rl = readline.createInterface({
@@ -11,8 +12,9 @@ class QuestionUtils{
             output: process.stdout
         });
     }
+    //TODO interface map<string,string>
     //questionne l’utilisateur et renvoie une promesse contenant objet avec pour attribut nomParam qui contient la répon
-    question(chaine, nomParam, objet) {
+    question(chaine:string, nomParam:string, objet:any):Promise<any> {
         return new Promise((resolve) => {
             this.rl.question(chaine, reponse => {
                 objet[nomParam] = reponse;
@@ -26,7 +28,3 @@ class QuestionUtils{
         this.rl.close();
     }
 }
-
-//===================================================================
-//export
-exports.QuestionUtils = QuestionUtils;
