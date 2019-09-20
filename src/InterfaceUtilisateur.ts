@@ -30,7 +30,8 @@ export default class InterfaceUtilisateur {
     demarrerInterface() {
 
         console.log("connexion");
-
+        console.log("id: user | mdp: user");
+        console.log("id: admin | mdp: admin");
         this.qU.question("identifiant:", "id", {})
             .then(infosConnexion =>this.qU.question("mot de passe:", "mdp", infosConnexion))
             .then(infosConnexion =>  this.service.connexion(infosConnexion.id, infosConnexion.mdp))
@@ -47,6 +48,7 @@ export default class InterfaceUtilisateur {
 
 //affiche la liste des collegues qui on le nom demandé
     rechercherParNom() {
+        console.log("nom disponible: user,admin")
         this.qU.question("nom:", "nom", {})
             .then(collegue => this.service.recupererParNom(collegue.nom))
             .then((listeCollegue) => this.affichageCollegue(listeCollegue));
@@ -58,7 +60,7 @@ export default class InterfaceUtilisateur {
             console.log("Aucun collegues trouvés avec ce nom.\n");
             this.afficherMenu();
         } else {
-            collegues.forEach(collegue => console.log(`nom: ${collegue.nom} | prenom: ${collegue.prenom} | ddn: ${collegue.ddn} | matricule: ${collegue.matricule}`));
+            collegues.forEach(collegue => console.log(`nom: ${collegue.nom} | prenom: ${collegue.prenom} | ddn: ${collegue.ddn} | matricule: ${collegue.matricule} | Url de la photo: ${collegue.photoUrl}`));
             console.log();
             this.afficherMenu();
         }
