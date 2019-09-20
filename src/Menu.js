@@ -9,6 +9,7 @@ class Menu{
 
         const chaine = this.listeItemMenu.map((item,index) => `${index}. ${item.libelle}`).join("\n");
         console.log(chaine);
+        this.choisirMenu()
     }
 
     choisirMenu(){
@@ -21,15 +22,22 @@ class Menu{
                     console.log("choix non reconnu");
                     this.choisirMenu();
                 }
+                return this.listeItemMenu[reponse.choix];
+            })
+            .then((choix)=>{
+                if(choix.sortir !== true){
+                    this.afficherMenu();
+                }
             })
     }
 
 }
 
 class MenuItem{
-    constructor(libelle,fonction){
+    constructor(libelle,fonction,sortir){
         this.libelle = libelle;
         this.fonction = fonction;
+        this.sortir = sortir;
     }
 }
 
