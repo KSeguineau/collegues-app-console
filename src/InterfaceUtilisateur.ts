@@ -70,6 +70,7 @@ export default class InterfaceUtilisateur {
 // creation d’un collegue
     creerCollegue() {
 
+        console.log("droit admin necessaire");
         this.qU.question("nom:", "nom", {})
             .then(collegue => this.qU.question("prenom:", "prenom", collegue))
             .then(collegue=>  this.qU.question("email:", "email", collegue))
