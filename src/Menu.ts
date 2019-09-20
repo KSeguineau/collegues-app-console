@@ -1,8 +1,13 @@
-class Menu{
+import QuestionUtils from "./QuestionUtils";
 
-    constructor(listeItemMenu,QuestionUtils){
-        this.listeItemMenu = listeItemMenu;
-        this.questionUtils = QuestionUtils;
+interface Choix {
+    choix:string;
+
+}
+export class Menu{
+
+    constructor(public listeItemMenu:MenuItem[],public questionUtils:QuestionUtils){
+
     }
 
     afficherMenu(){
@@ -26,12 +31,9 @@ class Menu{
 
 }
 
-class MenuItem{
-    constructor(libelle,fonction){
-        this.libelle = libelle;
-        this.fonction = fonction;
+export class MenuItem{
+    constructor(public libelle:string,public fonction:Function){
+
     }
 }
 
-exports.Menu = Menu;
-exports.MenuItem = MenuItem;
